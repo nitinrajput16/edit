@@ -1,19 +1,17 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT;
 const cors = require('cors');
-// const io = new Server(server, { cors: { origin: "http://localhost:8080" }})
 
 const http = require('http');
-const socketIo = require('socket.io');
+const {Server} = require('socket.io');
 const server = http.createServer(app); 
-const io = socketIo(server); 
+const io = new Server(server); 
 
 require('dotenv').config();
 
-
-// app.use(express.json());
+app.use(express.json());
 app.use(express.static('public'));   
 app.use(cors());
 
@@ -51,26 +49,22 @@ app.post('/editor', async (req, res) => {
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
-  // Join a room
   socket.on('join-room', (roomId) => {
     socket.join(roomId);
     console.log(`User ${socket.id} joined room ${roomId}`);
   });
 
-  // Handle code updates
   socket.on('code-update', (data) => {
     const { roomId, content } = data;
 
-    // Broadcast to everyone else in the room
     socket.to(roomId).emit('code-update', content);
   });
 
-  // Handle disconnection
   socket.on('disconnect', () => {
     console.log('A user disconnected:', socket.id);
   });
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

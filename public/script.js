@@ -2,9 +2,9 @@
 const socket = io(); 
 let roomId = localStorage.getItem('roomId') || prompt('Enter a room ID to join or create:');
 if (!roomId) {
-  roomId = 'default-room'; // Fallback if the user cancels the prompt
+  roomId = 'default-room'; 
 }
-localStorage.setItem('roomId', roomId); // Save room ID for subsequent visits
+localStorage.setItem('roomId', roomId); 
 
 socket.emit('join-room', roomId);
 
