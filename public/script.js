@@ -1,5 +1,5 @@
 
-const lastValue = "";
+let lastValue = "";
 
 const socket = io(); 
 let roomId = localStorage.getItem('roomId') || prompt('Enter a room ID to join or create:');
@@ -34,6 +34,7 @@ require(['vs/editor/editor.main'], function () {
     }
     
     socket.emit('code-update', { roomId, content }); // Emit the updated content to the room
+    lastValue = content;
   }
   setInterval(checkAndUpdateCode, 500);
 });
@@ -45,6 +46,7 @@ socket.on('code-update', (content) => {
 
   // Update editor content only if it's different
   if (currentContent !== content) {
+    lastValue = content;
     const selection = editor.getSelection(); // Save cursor position
     editor.setValue(content);
     editor.setSelection(selection); // Restore cursor position
