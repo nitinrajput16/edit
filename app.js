@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
   socket.on('code-update', (data) => {
     const { roomId, content } = data;
 
-    socket.to(roomId).emit('code-update', content);
+    socket.to(roomId).emit('code-update', content); // request
   });
 
   socket.on('disconnect', () => {
@@ -67,4 +67,3 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-// module.exports = server;

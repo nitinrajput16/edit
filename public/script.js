@@ -1,4 +1,6 @@
 
+const lastValue = "";
+
 const socket = io(); 
 let roomId = localStorage.getItem('roomId') || prompt('Enter a room ID to join or create:');
 if (!roomId) {
@@ -18,11 +20,24 @@ require(['vs/editor/editor.main'], function () {
   });
 
   // Detect changes in the editor
-  editor.onDidChangeModelContent(() => {
+  // editor.onDidChangeModelContent(() => {
+    
+  //   const content = editor.getValue();
+    
+  //   socket.emit('code-update', { roomId, content }); // Emit the updated content to the room
+  // });
+  
+  function checkAndUpdateCode() {
     const content = editor.getValue();
+    if(content == lastValue){
+      return;
+    }
+    
     socket.emit('code-update', { roomId, content }); // Emit the updated content to the room
-  });
+  }
+  setInterval(checkAndUpdate, 500);
 });
+
 
 // Listen for code updates from the server
 socket.on('code-update', (content) => {
