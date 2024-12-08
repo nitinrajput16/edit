@@ -18,14 +18,6 @@ require(['vs/editor/editor.main'], function () {
     language: 'c++',
     theme: 'vs-dark',
   });
-
-  // Detect changes in the editor
-  // editor.onDidChangeModelContent(() => {
-    
-  //   const content = editor.getValue();
-    
-  //   socket.emit('code-update', { roomId, content }); // Emit the updated content to the room
-  // });
   
   function checkAndUpdateCode() {
     const content = editor.getValue();
@@ -33,14 +25,13 @@ require(['vs/editor/editor.main'], function () {
       return;
     }
     
-    socket.emit('code-update', { roomId, content }); // Emit the updated content to the room
+    socket.emit('code-update', { roomId, content });
     lastValue = content;
   }
   setInterval(checkAndUpdateCode, 500);
 });
 
 
-// Listen for code updates from the server
 socket.on('code-update', (content) => {
   const currentContent = editor.getValue();
 

@@ -10,9 +10,15 @@
 </head>
 
 <body>
-  <header>
-    <h1>Learn Everyday</h1>
-  </header>
+  <nav>
+    <h1>Online Code Editor</h1>
+    <button id="saveButton">Save</button><button id="downloadButton">Download</button>
+  </nav>
+  <div id="file-system">
+    <!-- <h3>File System</h3> -->
+    <ul id="file-list"></ul>
+    <button id="newFileButton">New File</button>
+  </div>
   <main>
     <div id="editor-container">
       <select id="language">
@@ -20,9 +26,19 @@
         <option value="71">Python</option>
         <option value="54">C++</option>
         <option value="62">Java</option>
+        <option value="68">PHP</option>
+        <option value="82">SQL</option>
+        <option value="22">Go</option>
+        <option value="80">R</option>
+        <option value="73">Rust</option>
+        <option value="50">C</option>
+        <option value="72">Ruby</option>
+        <option value="51">C#</option>
+        <option value="78">Kotlin</option>
+        <option value="74">TypeScript</option>
       </select>
       <div id="editor"></div>
-      
+
       <button id="runButton">Run Code</button>
     </div>
     <div id="output-container">
