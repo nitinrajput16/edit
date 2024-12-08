@@ -6,7 +6,7 @@
             "use": "@vercel/node"
         },
         {
-            "src": "public/**",
+            "src": "public/**/*",
             "use": "@vercel/static"
         }
     ],
@@ -15,11 +15,11 @@
             "handle": "filesystem"
         },
         {
-            "src": "/(.*)",
+            "src": "/socket.io/(.*)",
             "dest": "app.js"
         },
         {
-            "src": "/",
+            "src": "/(.*)",
             "dest": "public/index.html"
         }
     ]
