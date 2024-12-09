@@ -35,12 +35,79 @@ require(['vs/editor/editor.main'], function () {
 socket.on('code-update', (content) => {
   const currentContent = editor.getValue();
 
-  // Update editor content only if it's different
+
   if (currentContent !== content) {
     lastValue = content;
-    const selection = editor.getSelection(); // Save cursor position
+    const selection = editor.getSelection(); 
     editor.setValue(content);
-    editor.setSelection(selection); // Restore cursor position
+    editor.setSelection(selection); 
+  }
+});
+
+document.getElementById('saveButton').addEventListener('click', async () => {
+  const code = editor.getValue();
+  const filename = prompt('Enter a filename to save the code:', 'code.txt');
+
+  if (!filename) return alert('Filename is required.');
+
+  try {
+    const response = await fetch('/save-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, filename }),
+    });
+
+    const result = await response.json();
+    alert(result.message || 'Code saved successfully!');
+  } catch (error) {
+    console.error('Error saving code:', error);
+    alert('Failed to save code.');
+  }
+});
+
+document.getElementById('loadButton').addEventListener('click', async () => {
+  const filename = prompt('Enter the filename to load:', 'code.txt');
+
+  if (!filename) return alert('Filename is required.');
+
+  try {
+    const response = await fetch(`/load-code?filename=${encodeURIComponent(filename)}`);
+    const result = await response.json();
+
+    if (result.code) {
+      editor.setValue(result.code);
+      alert('Code loaded successfully!');
+    } else {
+      alert('Failed to load the code.');
+    }
+  } catch (error) {
+    console.error('Error loading code:', error);
+    alert('Failed to load code.');
+  }
+});
+
+document.getElementById('listButton').addEventListener('click', async () =>  {
+  try {
+    const response = await fetch('/list-data');
+
+    const result = response.json();
+    console.log('Parsed JSON:', result); // Debugging
+
+    if (response.ok) {
+      const fileList = result.files;
+
+      const fileListContainer = document.getElementById('fileList');
+      fileListContainer.innerHTML = ''; // Clear previous list
+
+      fileList.forEach(filename => {
+        const listItem = document.createElement('li');
+        listItem.textContent = filename;
+        fileListContainer.appendChild(listItem);
+      });
+    }
+  }
+  catch (error) {
+    console.error('Error loading file list:', error);
   }
 });
 

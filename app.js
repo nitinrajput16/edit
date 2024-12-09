@@ -1,24 +1,85 @@
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
+const multer = require('multer');
+const path = require('path');
+const cors = require('cors');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT;
-const cors = require('cors');
 
 const http = require('http');
-const {Server} = require('socket.io');
-const server = http.createServer(app); 
-const io = new Server(server); 
+const { Server } = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(express.json());
-app.use(express.static('public'));   
+app.use(express.static('public'));
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+app.post('/save-code', (req, res) => {
+  const { code, filename } = req.body;
+
+  if (!code || !filename) {
+    return res.status(400).json({ error: 'Code and filename are required' });
+  }
+
+  const filePath = path.join(__dirname, 'saved', filename);
+
+  fs.writeFile(filePath, code, (err) => {
+    if (err) {
+      console.error('Error saving file:', err);
+      return res.status(500).json({ error: 'Failed to save the file' });
+    }
+
+    res.json({ message: 'File saved successfully', filePath });
+  });
 });
 
-console.log('Judge0 API URL:', process.env.JUDGE0_API_URL);
+// Load code route
+app.get('/load-code', (req, res) => {
+  const { filename } = req.query;
+
+  if (!filename) {
+    return res.status(400).json({ error: 'Filename is required' });
+  }
+
+  const filePath = path.join(__dirname, 'saved', filename);
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return res.status(500).json({ error: 'Failed to load the file' });
+    }
+
+    res.json({ code: data });
+  });
+});
+
+app.get('/list-data', async (req, res) => {
+  console.log('Request received:', req.url);
+  const savedDir = path.join(__dirname, 'saved');
+
+  try {
+    await fs.promises.mkdir(savedDir, { recursive: true });
+    const files = await fs.promises.readdir(savedDir);
+    const fileList = [];
+
+    for (const file of files) {
+      const filePath = path.join(savedDir, file);
+      const stat = await fs.promises.stat(filePath);
+      if (stat.isFile()) {
+        fileList.push(file);
+      }
+    }
+
+    res.json({ files: fileList });
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Failed to list files', details: err.message });
+  }
+});
+
 app.post('/editor', async (req, res) => {
   const { source_code, language_id, stdin } = req.body;
 

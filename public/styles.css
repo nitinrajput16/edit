@@ -6,17 +6,14 @@ body {
   }
 
   nav {
-    background: #011813;
+    background: #022820;
     color: white;
     padding: 10px 0;
   }
   
   nav h1{
-    margin: 0;
-    background: #011813;
     color: white;
     text-align: center;
-    overflow: hidden;
   }
 
   nav button {
@@ -26,33 +23,12 @@ body {
     font-size: 12px;
     color: white;
     padding: 10px 20px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     text-align: right;
-    /* float: right; */
     margin-right: max-content;
   }
-
-  #file-system{
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-    background: #011813;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-  }
-  
-  #file-system button{
-    margin: 0;
-    font-size: 12px;
-    background: #011813;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-align: center;
-    overflow: hidden;
-  }  
   
   main {
     display: flex;
