@@ -44,6 +44,63 @@ body {
     margin-bottom: 20px;
   }
   
+  .drawer-container {
+    position: fixed;
+    right: 2%;
+    top: 90px;
+    height: auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  .hover-area {
+    background-color: #011813;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    writing-mode: horizontal-tb;
+    text-orientation: upright;
+  }
+  
+  .drawer {
+    position: absolute;
+    left: 300px;  
+    width: 250px;
+    background-color: #011813;
+    border-radius: 10px;
+    color: white;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    padding: 15px;
+  }
+  
+  .drawer-container:hover .drawer {
+    left: -50px;  
+  }
+  
+  li {
+    padding: 10px 0;
+    list-style: none;
+    border-bottom: 1px solid #555;
+  }
+
+  .load-btn {
+    margin-left: 10px;
+    background-color: #022820;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .load-btn:hover {
+    background-color: #022820;
+  }
+  
+  
   #editor-container {
     width: 80%;
     margin: 10px 0;
@@ -67,10 +124,10 @@ body {
   
   #output-container {
     width: 80%;
-    background: #7e7e7e;
+    background: #011813;
+    color: white;
     padding: 10px;
     border-radius: 10px; 
-    border: 1px solid #ccc;
   }
   #runButton {
     background: #011813;

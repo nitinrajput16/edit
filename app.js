@@ -36,7 +36,6 @@ app.post('/save-code', (req, res) => {
   });
 });
 
-// Load code route
 app.get('/load-code', (req, res) => {
   const { filename } = req.query;
 
@@ -117,7 +116,7 @@ io.on('connection', (socket) => {
   socket.on('code-update', (data) => {
     const { roomId, content } = data;
 
-    socket.to(roomId).emit('code-update', content); // request
+    socket.to(roomId).emit('code-update', content);
   });
 
   socket.on('disconnect', () => {

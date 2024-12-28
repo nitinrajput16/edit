@@ -65,51 +65,54 @@ document.getElementById('saveButton').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('loadButton').addEventListener('click', async () => {
-  const filename = prompt('Enter the filename to load:', 'code.txt');
+document.querySelector('.drawer-container').addEventListener('mouseenter', async () => {
+  try {
+    const response = await fetch('/list-data');
+    const result = await response.json();
 
-  if (!filename) return alert('Filename is required.');
+    const fileListContainer = document.getElementById('fileList');
+    fileListContainer.innerHTML = '';
 
+    if (result.files && result.files.length > 0) {
+      result.files.forEach(filename => {
+        const listItem = document.createElement('li');
+        listItem.textContent = filename;
+
+        const loadButton = document.createElement('button');
+        loadButton.textContent = 'Load';
+        loadButton.classList.add('load-btn');
+        loadButton.addEventListener('click', () => loadFile(filename));  
+
+        listItem.appendChild(loadButton);
+        fileListContainer.appendChild(listItem);
+      });
+    } else {
+      fileListContainer.innerHTML = '<p>No files found</p>';
+    }
+  } catch (error) {
+    console.error('Error loading file list:', error);
+    document.getElementById('fileList').innerHTML = '<p>Error loading files</p>';
+  }
+});
+
+// Load File Function
+async function loadFile(filename) {
   try {
     const response = await fetch(`/load-code?filename=${encodeURIComponent(filename)}`);
     const result = await response.json();
 
     if (result.code) {
       editor.setValue(result.code);
-      alert('Code loaded successfully!');
+      alert(`Loaded: ${filename}`);
     } else {
-      alert('Failed to load the code.');
+      alert('Failed to load the file.');
     }
   } catch (error) {
     console.error('Error loading code:', error);
     alert('Failed to load code.');
   }
-});
+}
 
-document.getElementById('listButton').addEventListener('click', async () =>  {
-  try {
-    const response = await fetch('/list-data');
-
-    const result = response.json();
-    console.log('Parsed JSON:', result); // Debugging
-
-    if (response.ok) {
-      const fileList = result.files;
-
-      const fileListContainer = document.getElementById('fileList');
-      fileListContainer.innerHTML = ''; // Clear previous list
-
-      fileList.forEach(filename => {
-        const listItem = document.createElement('li');
-        listItem.textContent = filename;
-        fileListContainer.appendChild(listItem);
-      });
-    }
-  }
-  catch (error) {
-    console.error('Error loading file list:', error);
-  }
-});
 
 async function runCode() {
   const editorContent = monaco.editor.getModels()[0].getValue(); 
