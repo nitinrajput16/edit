@@ -2,13 +2,15 @@
 let lastValue = "";
 
 const socket = io(); 
-let roomId = localStorage.getItem('roomId') || prompt('Enter a room ID to join or create:');
-if (!roomId) {
-  roomId = 'default-room'; 
-}
-localStorage.setItem('roomId', roomId); 
+roomId = localStorage.getItem('roomId') || '';
+// let roomId = localStorage.getItem('roomId') || prompt('Enter a room ID to join or create:');
+// if (!roomId) {
+//   roomId = 'default-room'; 
+// }
+// localStorage.setItem('roomId', roomId); 
 
-socket.emit('join-room', roomId);
+// socket.emit('join-room', roomId);
+
 
 let editor;
 require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs' } });
@@ -30,6 +32,25 @@ require(['vs/editor/editor.main'], function () {
   }
   setInterval(checkAndUpdateCode, 500);
 });
+
+document.getElementById('createRoomButton').addEventListener('click', () => {
+  const inputRoomId = document.getElementById('roomInput').value.trim();
+
+  if (inputRoomId) {
+    roomId = inputRoomId;
+    localStorage.setItem('roomId', roomId);
+    socket.emit('join-room', roomId);
+    alert(`Room created and joined: ${roomId}`);
+  } else {
+    alert('Please enter a Room ID to create or join.');
+  }
+});
+
+if (!roomId) {
+  document.getElementById('roomInput').placeholder = 'Create or enter room ID';
+} else {
+  socket.emit('join-room', roomId);
+}
 
 
 socket.on('code-update', (content) => {
@@ -103,7 +124,6 @@ async function loadFile(filename) {
 
     if (result.code) {
       editor.setValue(result.code);
-      alert(`Loaded: ${filename}`);
     } else {
       alert('Failed to load the file.');
     }

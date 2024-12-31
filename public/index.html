@@ -4,23 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Code Editor</title>
+  <title>Code Collabe</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/editor/editor.main.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+
   <nav>
-    <h1>Online Code Editor</h1>
+    <h1>Code Collabe</h1>
     <button id="saveButton">Save</button>
-    <!-- <button id="listButton">List</button>
-    <ul id="fileList"></ul> -->
+
     <div class="drawer-container">
-      <div class="hover-area"><button>List</button></div>
+      <div class="hover-area"><button>Files</button></div>
       <div id="hoverDrawer" class="drawer">
         <div id="fileList"></div>
       </div>
     </div>
+
+    <div class="room-controls">
+      <button id="createRoomButton">Create Room</button>
+      <input type="text" id="roomInput" placeholder="Enter Room ID">
+    </div>
+
   </nav>
   <main>
     <div id="editor-container">

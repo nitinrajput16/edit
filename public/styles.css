@@ -16,8 +16,19 @@ body {
     text-align: center;
   }
 
-  nav button {
-    margin-right: 10px;
+  button {
+    box-sizing: border-box;
+    background: #011813;
+    font-size: 12px;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: right;
+  }
+
+  input{
     box-sizing: border-box;
     background: #011813;
     font-size: 12px;
@@ -27,9 +38,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
     text-align: right;
-    margin-right: max-content;
+    outline: none;
   }
-  
+
   main {
     display: flex;
     flex-direction: column;
@@ -45,39 +56,45 @@ body {
   }
   
   .drawer-container {
-    position: fixed;
-    right: 2%;
-    top: 90px;
+    position: relative;
+    width: 55px;
     height: auto;
     display: flex;
     align-items: center;
+    /* overflow: hidden; */
   }
   
   .hover-area {
+    height: auto;
     background-color: #011813;
     color: white;
     display: flex;
+    border-radius: 5px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     writing-mode: horizontal-tb;
     text-orientation: upright;
+    padding: 0;
   }
   
   .drawer {
     position: absolute;
-    left: 300px;  
+    left: -300px;
     width: 250px;
+    height: auto;
     background-color: #011813;
-    border-radius: 10px;
     color: white;
     overflow-y: auto;
     transition: left 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
   }
   
   .drawer-container:hover .drawer {
-    left: -50px;  
+    left: 100px;  
   }
   
   li {
@@ -85,6 +102,7 @@ body {
     list-style: none;
     border-bottom: 1px solid #555;
   }
+  
 
   .load-btn {
     margin-left: 10px;
@@ -99,7 +117,6 @@ body {
   .load-btn:hover {
     background-color: #022820;
   }
-  
   
   #editor-container {
     width: 80%;
@@ -132,7 +149,7 @@ body {
   #runButton {
     background: #011813;
     color: white;
-    border: none;
+    border: 1px solid #555;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
