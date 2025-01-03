@@ -2,62 +2,61 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Collabe</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/editor/editor.main.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Collabe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="style2.css">
 </head>
 
 <body>
 
-  <nav>
-    <h1>Code Collabe</h1>
-    <button id="saveButton">Save</button>
-
-    <div class="drawer-container">
-      <div class="hover-area"><button>Files</button></div>
-      <div id="hoverDrawer" class="drawer">
-        <div id="fileList"></div>
-      </div>
+    <div class="fc">
+        <div class="left-pane">
+            <div id="fileList"></div>
+        </div>
+        <div class="right-pane">
+            <div class="menu">
+                <select id="language">
+                    <option value="63">JavaScript</option>
+                    <option value="71">Python</option>
+                    <option value="54">CPP</option>
+                    <option value="62">Java</option>
+                    <option value="68">PHP</option>
+                    <option value="82">SQL</option>
+                    <option value="22">Go</option>
+                    <option value="80">R</option>
+                    <option value="73">Rust</option>
+                    <option value="50">C</option>
+                    <option value="72">Ruby</option>
+                    <option value="51">CSharp</option>
+                    <option value="78">Kotlin</option>
+                    <option value="74">TypeScript</option>
+                </select>
+                <div class="room-controls menu-item">
+                    <input type="text" id="roomInput" placeholder="Enter Room ID">
+                    <button id="RoomButton">Create Room</button>
+                </div>
+                <div class="empty-div"></div>
+                <div class="menu-item">
+                    <button id="runButton">Run Code</button>
+                    <button id="saveButton">Save</button>
+                </div>
+            </div>
+            <div class="main-content">
+                <div id="editor-container">
+                    <div id="editor"></div>
+                </div>
+                <div id="output-container">
+                    <textarea id="stdinInput" placeholder="Enter stdin..."></textarea>
+                    <pre id="output"></pre>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="room-controls">
-      <button id="createRoomButton">Create Room</button>
-      <input type="text" id="roomInput" placeholder="Enter Room ID">
-    </div>
-
-  </nav>
-  <main>
-    <div id="editor-container">
-      <select id="language">
-        <option value="63">JavaScript</option>
-        <option value="71">Python</option>
-        <option value="54">C++</option>
-        <option value="62">Java</option>
-        <option value="68">PHP</option>
-        <option value="82">SQL</option>
-        <option value="22">Go</option>
-        <option value="80">R</option>
-        <option value="73">Rust</option>
-        <option value="50">C</option>
-        <option value="72">Ruby</option>
-        <option value="51">C#</option>
-        <option value="78">Kotlin</option>
-        <option value="74">TypeScript</option>
-      </select>
-      <div id="editor"></div>
-
-      <button id="runButton">Run Code</button>
-    </div>
-    <div id="output-container">
-      <h3>Output</h3>
-      <pre id="output"></pre>
-    </div>
-  </main>
-  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"></script>
-  <script src="script.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

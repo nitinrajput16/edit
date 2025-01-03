@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+    --bgcolor: #04100c;
+}
+
+body {
+    margin: 0;
+    background: var(--bgcolor);
+}
+
+.fc {
+    width:100vw;
+    height:100vh;
+    display:flex;
+}
+.left-pane {
+    width:300px;
+    max-width: 90vw;
+    background: #ffffff08;
+    border: 1px solid #ffffff15;
+}
+.right-pane {
+    flex:1;
+    display:flex;
+    flex-direction: column;
+}
+
+input {
+    outline: none;
+    background-color: #ffffff11;
+    border: none;
+    color: #fff;
+}
+.room-controls {
+    height:100%;
+    display:flex;
+    margin-left: 7px;
+}
+.menu {
+    display:flex;
+    max-height:8vw;
+    align-items: center;
+    padding:3px;
+
+}
+.menu > .empty-div {
+    flex:1;
+}
+.menu-item {
+    padding:3px;
+}
+button {
+    text-decoration: none;
+    outline:none;
+    border:none;
+    background: #0a5;
+    color:#fff;
+    padding:8px 15px;
+    cursor:pointer;
+}
+#fileList > li{
+    background: #ffffff08;
+    font-size: 14px;
+    padding:5px;
+    padding-left:7px ;
+    color: #fff;
+    cursor: pointer;
+    
+}
+
+.main-content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+#editor-container, #editor {
+    width:100%;
+    height:100%;
+}
+#output-container{
+    color: #0a5;
+    display:flex;
+    min-height:25vh;
+}
+#stdinInput {
+    width:300px;
+    background:transparent;
+    border:none;
+    border-right:1px solid #fff1;
+    color: #0a5;
+    outline: none;
+}
+
+#output::before{
+    content: "Output:";
+    display:block;
+}
+.monaco-editor{
+    outline:none;
+}
+.monaco-editor .sticky-widget{
+    background: var(--bgcolor);
+}

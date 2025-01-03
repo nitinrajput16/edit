@@ -15,10 +15,20 @@ roomId = localStorage.getItem('roomId') || '';
 let editor;
 require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs' } });
 require(['vs/editor/editor.main'], function () {
+  
+  monaco.editor.defineTheme('my-dark', {
+    base: 'vs-dark',
+    inherit:true,
+    colors: {
+      "editor.background": '#ffffff04',
+      "minimap.background": '#ffffff04'
+    },
+    rules: []
+  });
+  monaco.editor.setTheme('my-dark');
   editor = monaco.editor.create(document.getElementById('editor'), {
     value: '// Write your code here...',
-    language: 'c++',
-    theme: 'vs-dark',
+    language: 'javascript'
   });
   
   function checkAndUpdateCode() {
@@ -33,7 +43,8 @@ require(['vs/editor/editor.main'], function () {
   setInterval(checkAndUpdateCode, 500);
 });
 
-document.getElementById('createRoomButton').addEventListener('click', () => {
+
+document.getElementById('RoomButton').addEventListener('click', () => {
   const inputRoomId = document.getElementById('roomInput').value.trim();
 
   if (inputRoomId) {
@@ -86,7 +97,7 @@ document.getElementById('saveButton').addEventListener('click', async () => {
   }
 });
 
-document.querySelector('.drawer-container').addEventListener('mouseenter', async () => {
+(async () => {
   try {
     const response = await fetch('/list-data');
     const result = await response.json();
@@ -99,12 +110,7 @@ document.querySelector('.drawer-container').addEventListener('mouseenter', async
         const listItem = document.createElement('li');
         listItem.textContent = filename;
 
-        const loadButton = document.createElement('button');
-        loadButton.textContent = 'Load';
-        loadButton.classList.add('load-btn');
-        loadButton.addEventListener('click', () => loadFile(filename));  
-
-        listItem.appendChild(loadButton);
+        listItem.addEventListener('click', () => loadFile(filename));
         fileListContainer.appendChild(listItem);
       });
     } else {
@@ -114,9 +120,8 @@ document.querySelector('.drawer-container').addEventListener('mouseenter', async
     console.error('Error loading file list:', error);
     document.getElementById('fileList').innerHTML = '<p>Error loading files</p>';
   }
-});
+})();
 
-// Load File Function
 async function loadFile(filename) {
   try {
     const response = await fetch(`/load-code?filename=${encodeURIComponent(filename)}`);
@@ -134,33 +139,72 @@ async function loadFile(filename) {
 }
 
 
-async function runCode() {
-  const editorContent = monaco.editor.getModels()[0].getValue(); 
-  const languageId = document.getElementById('language').value; 
 
+document.getElementById('language').addEventListener("change", function(e) {
+  const sel = e.target;
+  
+  const lang = sel.options[sel.selectedIndex].text.toLowerCase();
+  console.log(lang);
+  monaco.editor.setModelLanguage(editor.getModel(), lang);
+})
+
+async function runCode() {
+  const editorContent = monaco.editor.getModels()[0].getValue();
+  const languageId = document.getElementById('language').value;
+  const stdin = document.getElementById('stdinInput').value;  // Get user input
 
   const payload = {
-    source_code: editorContent,
-    language_id: languageId,
+      source_code: editorContent,
+      language_id: languageId,
+      stdin: stdin
   };
 
   try {
-    const response = await fetch('/editor', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch('/editor', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+      });
 
-    const result = await response.json();
-
-    const output = result.stdout || result.stderr || result.message;
-    document.getElementById('output').textContent = output;
+      const result = await response.json();
+      const output = result.stdout || result.stderr || result.message;
+      document.getElementById('output').textContent = output;
   } catch (error) {
-    console.error('Error compiling code:', error);
-    document.getElementById('output').textContent = 'Error compiling code. Please try again.';
+      console.error('Error:', error);
+      document.getElementById('output').textContent = 'Error running code.';
   }
 }
+
+// async function runCode() {
+//   const editorContent = monaco.editor.getModels()[0].getValue(); 
+//   const languageId = document.getElementById('language').value; 
+
+
+//   const payload = {
+//     source_code: editorContent,
+//     language_id: languageId,
+//   };
+
+//   try {
+//     const response = await fetch('/editor', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload),
+//     });
+
+//     const result = await response.json();
+
+//     const output = result.stdout || result.stderr || result.message;
+//     document.getElementById('output').textContent = output;
+//   } catch (error) {
+//     console.error('Error compiling code:', error);
+//     document.getElementById('output').textContent = 'Error compiling code. Please try again.';
+//   }
+// }
 document.getElementById('runButton').addEventListener('click', runCode);
+
 
